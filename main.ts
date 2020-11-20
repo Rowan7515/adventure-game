@@ -116,9 +116,10 @@ function Check_for_shield () {
 let Used_spell = ""
 let Spell_options: string[] = []
 let _ = 0
-let Spell_available = 0
 let Spells: string[] = []
 let Max_health = 0
+let Random_number = 0
+let Spell_available = 0
 let Damage = 0
 let Weapon = 0
 let A_1_B_2 = 0
@@ -153,15 +154,25 @@ if (A_1_B_2 == 2) {
         if (Weapon == 1) {
             OLED.writeStringNewLine("You strike him with your sword dealing " + Damage + " damage")
             OLED.writeStringNewLine("He has 4 health")
+            OLED.clear()
             OLED.writeStringNewLine("He whips around and attacks")
         } else {
-            What_spell()
+            Check_for_shield()
+            if (Spell_available == 1) {
+                Spell_available = 0
+                OLED.writeStringNewLine("You block the attack")
+            } else {
+                Random_number = randint(1, 3)
+                OLED.writeStringNewLine("He hits, dealing " + Random_number + " damage")
+                OLED.writeStringNewLine("You have " + (Max_health - Random_number) + " health")
+            }
         }
     } else {
         OLED.writeStringNewLine("You walk up to him and say hello")
         Wait_until_A_pressed()
         OLED12864_I2C.clear()
         OLED.writeStringNewLine("\"Hello\"")
+        OLED.clear()
         OLED.writeStringNewLine("\"I can upgrade your damage or you max health\"")
         Upgrade_damage_or_health(1)
     }
