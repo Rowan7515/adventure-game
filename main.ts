@@ -6,6 +6,7 @@ function Set_up () {
     Max_health = 5
     Damage = 1
     Load(10)
+    Health = Max_health
 }
 function Check_for_heal () {
     if (Weapon == 2 && (Spells[0] == "Heal" || Spells[1] == "Heal")) {
@@ -118,8 +119,10 @@ let Spell_options: string[] = []
 let _ = 0
 let Spells: string[] = []
 let Max_health = 0
+let Health = 0
 let Random_number = 0
 let Spell_available = 0
+let Enemy_health = 0
 let Damage = 0
 let Weapon = 0
 let A_1_B_2 = 0
@@ -153,7 +156,8 @@ if (A_1_B_2 == 2) {
         OLED.writeStringNewLine("You attack him")
         if (Weapon == 1) {
             OLED.writeStringNewLine("You strike him with your sword dealing " + Damage + " damage")
-            OLED.writeStringNewLine("He has 4 health")
+            Enemy_health = 0
+            OLED.writeStringNewLine("He has " + Enemy_health + " health")
             OLED.clear()
             OLED.writeStringNewLine("He whips around and attacks")
         } else {
@@ -164,7 +168,8 @@ if (A_1_B_2 == 2) {
             } else {
                 Random_number = randint(1, 3)
                 OLED.writeStringNewLine("He hits, dealing " + Random_number + " damage")
-                OLED.writeStringNewLine("You have " + (Max_health - Random_number) + " health")
+                Health = Max_health - Random_number
+                OLED.writeStringNewLine("You have " + Health + " health")
             }
         }
     } else {
