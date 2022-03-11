@@ -4,7 +4,7 @@
     "dependencies": {
         "core": "*",
         "radio": "*",
-        "SSD1306_OLED": "github:tinkertanker/pxt-oled-ssd1306#v2.0.9",
+        "SSD1306_OLED": "github:tinkertanker/pxt-oled-ssd1306#v2.0.13",
         "OLED12864_I2C": "github:makecode-extensions/oled12864_i2c#127c10de32c07df9d274b4ba3594ffef4c2785e1",
         "microphone": "*"
     },
@@ -16,6 +16,10 @@
     "testFiles": [
         "test.ts"
     ],
+    "targetVersions": {
+        "target": "4.0.18",
+        "targetId": "microbit"
+    },
     "supportedTargets": [
         "microbit"
     ],

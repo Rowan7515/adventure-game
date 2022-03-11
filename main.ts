@@ -5,7 +5,7 @@ function Set_up () {
     Weapon = 0
     Max_health = 5
     Damage = 1
-    Load(10)
+    Load(0.1)
     Health = Max_health
 }
 function Check_for_heal () {
@@ -19,10 +19,13 @@ function Check_for_heal () {
 function Load (Speed: number) {
     OLED.clear()
     _ = 0
-    for (let index = 0; index < 101; index++) {
-        OLED.drawLoading(_)
-        _ += 1
-        basic.pause(Speed)
+    while (_ < 100) {
+        OLED.drawLoading(Math.round(_))
+        _ += randint(Speed - 1, Speed + 1)
+        if (_ < 0.5) {
+            _ = 0.5
+        }
+        basic.pause(randint(Speed - 1, Speed + 0.5))
     }
     OLED.clear()
 }
@@ -157,8 +160,9 @@ if (A_1_B_2 == 2) {
         if (Weapon == 1) {
             OLED.writeStringNewLine("You strike him with your sword dealing " + Damage + " damage")
             Enemy_health = 0
-            OLED.writeStringNewLine("He has " + Enemy_health + " health")
+            Wait_until_A_pressed()
             OLED.clear()
+            OLED.writeStringNewLine("He has " + Enemy_health + " health")
             OLED.writeStringNewLine("He whips around and attacks")
         } else {
             Check_for_shield()
@@ -178,7 +182,7 @@ if (A_1_B_2 == 2) {
         OLED12864_I2C.clear()
         OLED.writeStringNewLine("\"Hello\"")
         OLED.clear()
-        OLED.writeStringNewLine("\"I can upgrade your damage or you max health\"")
+        OLED.writeStringNewLine("\"I can upgrade your damage or your max health\"")
         Upgrade_damage_or_health(1)
     }
 }
