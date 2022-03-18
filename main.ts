@@ -21,7 +21,7 @@ function Load (Speed: number) {
     _ = 0
     while (_ < 100) {
         OLED.drawLoading(Math.round(_))
-        _ += randint(Speed - 1, Speed + 1)
+        _ += randint(Speed - 1, Speed + 2)
         if (_ < 0.5) {
             _ = 0.5
         }
@@ -117,16 +117,57 @@ function Check_for_shield () {
         Spell_available = 0
     }
 }
+function Battle (health: number, damage: number) {
+    Enemy_health = health
+    OLED.writeStringNewLine("You attack him")
+    while (!(Enemy_health <= 0 || Health <= 0)) {
+        if (Weapon == 1) {
+            OLED.writeStringNewLine("You strike him with your sword dealing " + Damage + " damage")
+            Enemy_health = Enemy_health - Damage
+            Wait_until_A_pressed()
+            OLED.clear()
+            if (Enemy_health <= 0) {
+                Enemy_health = 0
+            }
+            OLED.writeStringNewLine("He has " + Enemy_health + " health")
+            if (Enemy_health <= 0) {
+                break;
+            }
+            OLED.writeStringNewLine("He whips around and attacks")
+        } else {
+            Check_for_shield()
+            if (Spell_available == 1) {
+                Spell_available = 0
+                OLED.writeStringNewLine("You block the attack")
+            } else {
+                Random_number = randint(1, 3)
+                OLED.writeStringNewLine("He hits, dealing " + Random_number + " damage")
+                Health = Max_health - Random_number
+                OLED.writeStringNewLine("You have " + Health + " health")
+            }
+        }
+    }
+    if (Enemy_health <= 0) {
+        BattleResult = 1
+        OLED.writeStringNewLine("You win!")
+    } else {
+        BattleResult = 0
+        OLED.writeStringNewLine("You lose!")
+        basic.pause(2000)
+        control.reset()
+    }
+}
+let BattleResult = 0
+let Random_number = 0
+let Enemy_health = 0
 let Used_spell = ""
 let Spell_options: string[] = []
 let _ = 0
-let Spells: string[] = []
-let Max_health = 0
-let Health = 0
-let Random_number = 0
 let Spell_available = 0
-let Enemy_health = 0
+let Spells: string[] = []
+let Health = 0
 let Damage = 0
+let Max_health = 0
 let Weapon = 0
 let A_1_B_2 = 0
 Set_up()
@@ -156,26 +197,7 @@ if (A_1_B_2 == 2) {
     OLED.writeStringNewLine("(A= attack B= talk")
     Wait_until_AB_prassed()
     if (A_1_B_2 == 1) {
-        OLED.writeStringNewLine("You attack him")
-        if (Weapon == 1) {
-            OLED.writeStringNewLine("You strike him with your sword dealing " + Damage + " damage")
-            Enemy_health = 0
-            Wait_until_A_pressed()
-            OLED.clear()
-            OLED.writeStringNewLine("He has " + Enemy_health + " health")
-            OLED.writeStringNewLine("He whips around and attacks")
-        } else {
-            Check_for_shield()
-            if (Spell_available == 1) {
-                Spell_available = 0
-                OLED.writeStringNewLine("You block the attack")
-            } else {
-                Random_number = randint(1, 3)
-                OLED.writeStringNewLine("He hits, dealing " + Random_number + " damage")
-                Health = Max_health - Random_number
-                OLED.writeStringNewLine("You have " + Health + " health")
-            }
-        }
+        Battle(3, 1)
     } else {
         OLED.writeStringNewLine("You walk up to him and say hello")
         Wait_until_A_pressed()
